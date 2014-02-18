@@ -26,7 +26,7 @@ Akka-mesos declares its dependency on Akka with "provided" scope, so your projec
 
 Tell Akka to load the akka-mesos extension by modifying your application's config
 
-```json
+```
 akka {
   extensions = ["akka.mesos.Mesos"]
 }
@@ -34,7 +34,7 @@ akka {
 
 Add configuration values to specify the location of your mesos master
 
-```json
+```
 akka {
   mesos {
     master = "mesos-master.mycompany.com:5050"
