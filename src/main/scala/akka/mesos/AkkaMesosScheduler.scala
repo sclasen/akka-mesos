@@ -219,7 +219,7 @@ object AkkaMesosScheduler {
     * however, that this is currently not true if the slave sending the
     * status update is lost/fails during that time).
     */
-  case class StatusUpdate(status: TaskStatus) extends SchedulerMessage
+  case class StatusUpdate(taskStatus: TaskStatus) extends SchedulerMessage
 
   /**
     * Sent when an executor sends a message. These messages are best

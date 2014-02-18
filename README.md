@@ -1,15 +1,86 @@
 # akka-mesos
 
-## Overview
+An Akka extension to simplify building reactive Mesos frameworks.
 
-A new Scala framework for Apache Mesos.
+## Getting Started
 
-## Goals
+Add the akka-mesos dependency to your project _(TODO: mirror on Maven central)_
 
-- Make X easier
-- Do Y better
+SBT:
 
-## Usage
+```scala
+libraryDependencies += "io.mesosphere" %% "akka-mesos" % "0.1.0"
+```
 
-    val example = new Example()
-    example.doX
+Maven:
+
+```xml
+<dependency>
+  <groupId>io.mesosphere</groupId>
+  <artifactId>akka-mesos</artifactId>
+  <version>0.1.0</version>
+</dependency>
+```
+
+Akka-mesos declares its dependency on Akka with "provided" scope, so your project needs to specify an Akka dependency as well.
+
+Tell Akka to load the akka-mesos extension by modifying your application's config
+
+```json
+akka {
+  extensions = ["akka.mesos.Mesos"]
+}
+```
+
+Add configuration values to specify the location of your mesos master
+
+```json
+akka {
+  mesos {
+    master = "mesos-master.mycompany.com:5050"
+  }
+}
+```
+
+Import and mix in the supplied `AkkaMesosScheduler` trait to an Actor subclass.  The `preStart` and `preRestart` behaviors illustrated below are significant.  The receive partial function should be defined for the subtypes of `AkkaMesosScheduler.SchedulerMessage`.
+
+```scala
+import akka.actor._
+import akka.mesos.AkkaMesosScheduler
+
+class ReactiveScheduler extends Actor with AkkaMesosScheduler {
+
+  import AkkaMesosScheduler._ // scheduler messages
+
+  override def preStart(): Unit = register()
+
+  override def preRestart(
+    reason: Throwable,
+    message: Option[Any]): Unit = this.register()
+
+  override def postStop(): Unit = driver.stop
+
+  def receive = {
+
+    case Registered(frameworkId, masterInfo) => // ...
+
+    case Reregistered(masterInfo) => // ...
+
+    case ResourceOffers(offers) => // ...
+
+    case OfferRescinded(offerId) => // ...
+
+    case StatusUpdate(taskStatus) => // ...
+
+    case FrameworkMessage(executorId, slaveId, data) => // ...
+
+    case Disconnected() => // ...
+
+    case SlaveLost(slaveId) => // ...
+
+    case ExecutorLost(executorId, slaveId, status) => // ...
+
+    case Error(message) => // ...
+  }
+}
+```
