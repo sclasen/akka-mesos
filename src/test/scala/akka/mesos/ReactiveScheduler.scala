@@ -18,6 +18,8 @@ class ReactiveScheduler extends Actor with AkkaMesosScheduler {
 
   override def postStop(): Unit = driver.stop
 
+  var callback: Option[ActorRef] = None
+
   def receive = LoggingReceive {
 
     case Registered(frameworkId, masterInfo) =>
@@ -33,12 +35,21 @@ class ReactiveScheduler extends Actor with AkkaMesosScheduler {
         driver declineOffer offer.getId
       }
 
-      log info "Stopping the [%s] actor system...".format(context.system.name)
-      context.system.shutdown()
+      callback.foreach { ref =>
+        ref ! ReactiveScheduler.Done()
+      }
     }
+
+    case ReactiveScheduler.CallMeBack =>
+      this.callback = Some(sender)
 
     case message: SchedulerMessage =>
       log info "Received scheduler message [%s]".format(message)
 
   }
+}
+
+object ReactiveScheduler {
+  case class CallMeBack()
+  case class Done()
 }

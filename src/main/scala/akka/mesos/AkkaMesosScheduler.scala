@@ -171,7 +171,9 @@ object AkkaMesosScheduler {
     * distinguishing this framework from others and MasterInfo
     * with the ip and port of the current master are provided.
     */
-  case class Registered(frameworkId: FrameworkID, masterInfo: MasterInfo) extends SchedulerMessage
+  case class Registered(
+    frameworkId: FrameworkID,
+    masterInfo: MasterInfo) extends SchedulerMessage
 
   /**
     * Sent after re-registering with a newly elected Mesos

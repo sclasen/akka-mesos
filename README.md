@@ -22,7 +22,7 @@ Maven:
 </dependency>
 ```
 
-Akka-mesos declares its dependency on Akka with "provided" scope, so your project needs to specify an Akka dependency as well.
+Akka-mesos declares its dependency on Akka with "provided" scope, so your project needs to specify an Akka dependency as well.  Akka-mesos is built against Akka version `2.2.3`.
 
 Tell Akka to load the akka-mesos extension by modifying your application's config
 
@@ -42,7 +42,11 @@ akka {
 }
 ```
 
-Import and mix in the supplied `AkkaMesosScheduler` trait to an Actor subclass.  The `preStart` and `preRestart` behaviors illustrated below are significant.  The receive partial function should be defined for the subtypes of `AkkaMesosScheduler.SchedulerMessage`.
+## Usage
+
+### AkkaMesosScheduler
+
+To implement a Mesos scheduler as an Akka actor, import and mix in the supplied `AkkaMesosScheduler` trait to an `Actor` subclass.  The `preStart` and `preRestart` behaviors illustrated below are significant.  The `receive` partial function should be defined for the subtypes of `AkkaMesosScheduler.SchedulerMes```sage`.
 
 ```scala
 import akka.actor._
@@ -83,4 +87,12 @@ class ReactiveScheduler extends Actor with AkkaMesosScheduler {
     case Error(message) => // ...
   }
 }
+```
+
+### AkkaMesosExecutor
+
+To implement a Mesos scheduler as an Akka actor, import and mix in the supplied `AkkaMesosExecutor` trait to an `Actor` subclass.  The `preStart` and `preRestart` behaviors illustrated below are significant.  The `receive` partial function should be defined for the subtypes of `AkkaMesosScheduler.SchedulerMessage`.
+
+```scala
+// TODO
 ```
