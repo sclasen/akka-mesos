@@ -14,7 +14,7 @@ object AkkaMesosBuild extends Build {
   val ORGANIZATION    = "akka.mesos"
   val PROJECT_NAME    = "akka-mesos"
   val PROJECT_VERSION = "0.1.0"
-  val SCALA_VERSION   = "2.10.3"
+  val SCALA_VERSION   = "2.10.4"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -37,14 +37,37 @@ object AkkaMesosBuild extends Build {
 
 
 //////////////////////////////////////////////////////////////////////////////
-// ROOT PROJECT
+// PROJECTS
 //////////////////////////////////////////////////////////////////////////////
 
   lazy val root = Project(
     id = PROJECT_NAME,
     base = file("."),
     settings = commonSettings
+  ) dependsOn (
+    core, cluster
+  ) aggregate (
+    core, cluster
   )
+
+  def subproject(suffix: String) = s"${PROJECT_NAME}-$suffix"
+
+  lazy val core = Project(
+    id = subproject("core"),
+    base = file("core"),
+    settings = commonSettings
+  )
+
+  lazy val cluster = Project(
+    id = subproject("cluster"),
+    base = file("cluster"),
+    settings = commonSettings ++ Seq (
+      libraryDependencies ++= Seq(
+        "com.typesafe.akka" %% "akka-cluster" % AKKA_VERSION % "provided"
+      )
+    )
+  ) dependsOn(core)
+
 
 
 //////////////////////////////////////////////////////////////////////////////
