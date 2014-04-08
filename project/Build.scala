@@ -21,7 +21,7 @@ object AkkaMesosBuild extends Build {
 // DEPENDENCY VERSIONS
 //////////////////////////////////////////////////////////////////////////////
 
-  val MESOS_VERSION           = "0.16.0"
+  val MESOS_VERSION           = "0.17.0"
   val AKKA_VERSION            = "2.2.3"
   val TYPESAFE_CONFIG_VERSION = "1.0.2"
   val SCALATEST_VERSION       = "2.0.M5b"
