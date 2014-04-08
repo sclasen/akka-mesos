@@ -84,11 +84,7 @@ object AkkaMesosBuild extends Build {
       pathToMesosLibs
     ),
 
-    fork in run := true,
-
-    fork in Test := true,
-
-    parallelExecution in Test := false
+    fork in Test := true
   )
 
   lazy val formatSettings = scalariformSettings ++ Seq(

@@ -20,9 +20,8 @@ class ReactiveExecutor extends Actor with AkkaMesosExecutor {
 
   def receive = LoggingReceive {
 
-    case Registered(executorInfo, frameworkInfo, slaveInfo) => {
+    case Registered(executorInfo, frameworkInfo, slaveInfo) =>
       log info "Successfully registered as a Mesos executor"
-    }
 
     case Reregistered(slaveInfo) =>
       log info "Reregistered as a Mesos executor"

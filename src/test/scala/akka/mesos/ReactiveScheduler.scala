@@ -37,6 +37,7 @@ class ReactiveScheduler extends Actor with AkkaMesosScheduler {
 
       callback.foreach { ref =>
         ref ! ReactiveScheduler.Done()
+        driver.stop()
       }
     }
 
