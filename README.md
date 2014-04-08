@@ -60,7 +60,7 @@ class ReactiveScheduler extends Actor with AkkaMesosScheduler {
 
   override def preRestart(
     reason: Throwable,
-    message: Option[Any]): Unit = this.register()
+    message: Option[Any]): Unit = register()
 
   override def postStop(): Unit = driver.stop
 
