@@ -45,9 +45,9 @@ object AkkaMesosBuild extends Build {
     base = file("."),
     settings = commonSettings
   ) dependsOn (
-    core, cluster
+    core, cluster, util
   ) aggregate (
-    core, cluster
+    core, cluster, util
   )
 
   def subproject(suffix: String) = s"${PROJECT_NAME}-$suffix"
@@ -56,7 +56,7 @@ object AkkaMesosBuild extends Build {
     id = subproject("core"),
     base = file("core"),
     settings = commonSettings
-  )
+  ) dependsOn(util)
 
   lazy val cluster = Project(
     id = subproject("cluster"),
@@ -68,6 +68,11 @@ object AkkaMesosBuild extends Build {
     )
   ) dependsOn(core)
 
+  lazy val util = Project(
+    id = subproject("util"),
+    base = file("util"),
+    settings = commonSettings
+  )
 
 
 //////////////////////////////////////////////////////////////////////////////
