@@ -46,7 +46,7 @@ akka {
 
 ### AkkaMesosScheduler
 
-To implement a Mesos scheduler as an Akka actor, import and mix in the supplied `AkkaMesosScheduler` trait to an `Actor` subclass.  The `preStart` and `preRestart` behaviors illustrated below are significant.  The `receive` partial function should be defined for the subtypes of `AkkaMesosScheduler.SchedulerMes```sage`.
+To implement a Mesos scheduler as an Akka actor, import and mix in the supplied `AkkaMesosScheduler` trait to an `Actor` subclass.  The `preStart` and `preRestart` behaviors illustrated below are significant.  The `receive` partial function should be defined for the subtypes of `AkkaMesosScheduler.SchedulerMessage`.
 
 ```scala
 import akka.actor._
